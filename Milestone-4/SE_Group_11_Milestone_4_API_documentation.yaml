@@ -1,0 +1,1087 @@
+openapi: 3.0.3
+info: 
+  title: QuickResolve
+  description: "<br><h3>QuickResolve is a platform that enables effective query redressal. Herein, the students can post their queries and the support staff can resolve the queries. The platform provides additional functionalities such as pinning the queries, reporting, deleting & adding the queries to the FAQ document.The web application is built using the Flask framework & can be easily run on the localhost. </h3><h3>Here we present the API documentation for the designed application.</h3>"
+  version: "1.0"
+servers: 
+  - url: http://127.0.0.1:5000
+
+tags:
+  - name: "User"
+    description: "Endpoints for defining user operations"
+    
+  - name: "Support_Staff"
+    description: "Endpoints for defining support staff operations"
+    
+  - name: "Admin"
+    description: "Endpoints for defining admin operations"
+    
+  - name: "Student"
+    description: "Endpoints for defining student operations"
+    
+  - name: "FAQ"
+    description: "Endpoints for defining FAQ operations"
+  
+  - name: "Dashboard"
+    description: "Endpoints for defining dashboard operations"
+
+paths:
+  /user/adduser/{userid}/{username}/{usertype}/{password}:
+    description: "Endpoint to create user accounts"
+    post:
+      tags:
+      - "User"
+      description: "Add user to application"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                UserId:
+                  type: integer
+                  example: 1
+                Username:
+                  type: string
+                  example: John Doe
+                UserType:
+                  type: string
+                  example: Support Staff
+                Password:
+                  type: string
+                  example: 1234@xyz
+          
+      parameters:
+        - in: path
+          name: userid
+          required: true
+          schema:
+            type: integer
+            example: 179
+            
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+            example: Joey
+            
+        - in: path
+          name: usertype
+          required: true
+          schema:
+            type: string
+            example: Student
+            
+        - in: path
+          name: password
+          required: true
+          schema:
+            type: string
+            example: 2pizzas@JoeySpecial
+            
+      responses:
+        "200":
+          description: Request Successful - User Added Successfully!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userid:
+                    type: integer
+                    example: 179
+                  username:
+                    type: string
+                    example: Joey
+                  status:
+                    type: string
+                    example: User Added Successfully!
+                  
+            
+        "403":
+          description: Already Exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  User already exists
+
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Internal Server Error
+  
+  /user/login/{username}/{password}:
+    description: "Endpoint to verrify User Credentials to grant access"
+    get:
+      tags:
+      - "User"
+      description: "Operation to help user login to access resource."
+      
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+            example: Joey
+            
+        - in: path
+          name: password
+          required: true
+          schema:
+            type: string
+            example: 2pizzas@JoeySpecial
+            
+      responses:
+        "200":
+          description: Request Successful - User Verrified!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userid:
+                    type: integer
+                    example: 179
+                  username:
+                    type: string
+                    example: Joey
+                  usertype:
+                    type: string
+                    example: Student
+                  status:
+                    type: string
+                    example: User Verrified Successfully!
+                  
+            
+        "404":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  User does not exist
+
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Internal Server Error
+
+  /user/deluser/{username}/{password}:
+    description: "Endpoint to delete user account."
+    delete:
+      tags:
+      - "User"
+      description: "Operation to help users delete their account after validating credentials."
+    
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+            example: Joey
+            
+        - in: path
+          name: password
+          required: true
+          schema:
+            type: string
+            example: 2pizzas@JoeySpecial
+            
+      responses:
+        "200":
+          description: Request Successful - Account Deleted!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Account Deleted Successfully!
+                  
+            
+        "404":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Account does not exist
+
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Internal Server Error
+
+  /support_staff/announcement/{userid}/{category}/{query}:
+    description: "Endpoint to make announcements"
+    post:
+      tags:
+      - "Support_Staff"
+      description: "Operation to help make announcements to the class"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Ticket_id:
+                  type: string
+                  example: Python/12347
+                Created_by:
+                  type: integer
+                  example: 179
+                Solved_by:
+                  type: integer
+                  example: -1
+                Category:
+                  type: string
+                  example: Python
+                Query:
+                  type: string
+                  example: Dear All, the live session is scheduled for 20th March, 2023 at 17:30 pm. Kindly join and make the most of teh oppurtunity.
+                Created_at:
+                  type: string
+                  example: 19th March 2023, 14:30 pm
+                Solved_at:
+                  type: string
+                  example: -1
+                IsResolved:
+                  type: boolean
+                  example: true
+                AddFAQ:
+                  type: boolean
+                  example: false
+                Pin:
+                  type: boolean
+                  example: true
+                Report:
+                  type: boolean
+                  example: false
+                Likes:
+                  type: integer
+                  example: 0
+
+      parameters:
+        - in: path
+          name: userid
+          required: true
+          schema:
+            type: integer
+            example: 179
+            
+        - in: path
+          name: category
+          required: true
+          schema:
+            type: string
+            example: Python
+            
+        - in: path
+          name: query
+          required: true
+          schema:
+            type: string
+            example: There is an error in the GA 4 Q7.. Could you please look into it?
+
+      responses:
+        "200":
+          description: Request Successful - Ticket Added Successfully!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userid:
+                    type: integer
+                    example: 179
+                  Ticket_id:
+                    type: string
+                    example: Joey
+                  status:
+                    type: string
+                    example: Ticket Added Successfully!
+                  
+            
+        "403":
+          description: Already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Ticket with same query already exists
+
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Internal Server Error
+                    
+  /support_staff/resolve_ticket/{ticket_id}:
+    description: "Endpoint to resolve student queries & update status"
+    put:
+      tags:
+      - "Support_Staff"
+      description: "Operation to help support staff resolve queries."
+      
+      parameters:
+        - in: path
+          name: ticket_id
+          required: true
+          schema:
+            type: string
+            example: Python_12345
+            
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Ticket_id:
+                  type: string
+                  example: Python_12345
+                IsResolved:
+                  type: boolean
+                  example: True
+                Solution:
+                  type: string
+                  example: Dear Student, GA 4 Q7 has been updated on the portal, kindly check.
+                Solved_by:
+                  type: integer
+                  example: 143
+                Solved_at:
+                  type: string
+                  example: 19th March 2023, 19:47 pm
+            
+      responses:
+        "200":
+          description: Request Successful - Query Resolved!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Ticket_id:
+                    type: string
+                    example: Python_12345
+                  status:
+                    type: string
+                    example: Query Resolved Successfully!
+                  
+            
+        "404":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Query with given id doesn't exist!
+
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Internal Server Error
+
+  /admin/add_ticket_to_faq/{ticket_id}:
+    description: "Endpoint to add popular queries to the faq doc"
+    put:
+      tags:
+      - "Admin"
+      description: "Operation to help support staff resolve queries."
+      
+      parameters:
+        - in: path
+          name: ticket_id
+          required: true
+          schema:
+            type: string
+            example: Python_12345
+            
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Ticket_id:
+                  type: string
+                  example: Python_12345
+                AddFAQ:
+                  type: boolean
+                  example: True
+            
+      responses:
+        "200":
+          description: Request Successful - Query Resolved!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Ticket_id:
+                    type: string
+                    example: Python_12345
+                  status:
+                    type: string
+                    example: Query Added to FAQ Successfully!
+                  
+            
+        "404":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Query with given id doesn't exist!
+
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Internal Server Error
+
+  /support_staff/pin_ticket/{ticket_id}:
+    description: "Endpoint to pin important tickets"
+    put:
+      tags:
+      - "Support_Staff"
+      description: "Operation to help pin important tickets."
+      
+      parameters:
+        - in: path
+          name: ticket_id
+          required: true
+          schema:
+            type: string
+            example: Python_12345
+            
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Ticket_id:
+                  type: string
+                  example: Python_12345
+                Pin:
+                  type: boolean
+                  example: True
+            
+      responses:
+        "200":
+          description: Request Successful - Query Pinned!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Ticket_id:
+                    type: string
+                    example: Python_12345
+                  status:
+                    type: string
+                    example: Query Pinned successfully!
+            
+        "404":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Query with given id doesn't exist!
+
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Internal Server Error
+                    
+  /support_staff/report_ticket/{ticket_id}:
+    description: "Endpoint to report objectionable tickets"
+    put:
+      tags:
+      - "Support_Staff"
+      description: "Operation to help maintain decorum and policy defined by the university."
+      
+      parameters:
+        - in: path
+          name: ticket_id
+          required: true
+          schema:
+            type: string
+            example: Python_12345
+            
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Ticket_id:
+                  type: string
+                  example: Python_12345
+                Report:
+                  type: boolean
+                  example: True
+            
+      responses:
+        "200":
+          description: Request Successful - Query Reported!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Ticket_id:
+                    type: string
+                    example: Python_12345
+                  status:
+                    type: string
+                    example: Query Reported successfully!
+                  
+            
+        "404":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Query with given id doesn't exist!
+
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Internal Server Error
+                    
+  /admin/delete_ticket/{ticket_id}:
+    description: "Endpoint to delete tickets"
+    delete:
+      tags:
+      - "Admin"
+      description: "Operation to help delete redundant / objectionable tickets."
+      
+      parameters:
+        - in: path
+          name: ticket_id
+          required: true
+          schema:
+            type: string
+            example: Python_12345
+
+      responses:
+        "200":
+          description: Request Successful - Query Deleted!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Ticket_id:
+                    type: string
+                    example: Python_12345
+                  status:
+                    type: string
+                    example: Query Deleted successfully!
+                  
+            
+        "404":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Query with given id doesn't exist!
+
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Internal Server Error
+                    
+  /Student/create_ticket/{userid}/{category}/{query}:
+    description: "Endpoint to create queries"
+    post:
+      tags:
+      - "Student"
+      description: "Operation to help create tickets for student queries"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Ticket_id:
+                  type: string
+                  example: Python/12345
+                Created_by:
+                  type: integer
+                  example: 179
+                Solved_by:
+                  type: integer
+                  example: 0
+                Category:
+                  type: string
+                  example: Python
+                Query:
+                  type: string
+                  example: There is an error in the GA 4 Q7.. Could you please look into it?
+                Created_at:
+                  type: string
+                  example: 19th March 2023, 14:30 pm
+                Solved_at:
+                  type: string
+                  example: 19th March 2023, 19:47 pm
+                IsResolved:
+                  type: boolean
+                  example: false
+                AddFAQ:
+                  type: boolean
+                  example: false
+                Pin:
+                  type: boolean
+                  example: false
+                Report:
+                  type: boolean
+                  example: false
+                Likes:
+                  type: integer
+                  example: 0
+
+      parameters:
+        - in: path
+          name: userid
+          required: true
+          schema:
+            type: integer
+            example: 179
+            
+        - in: path
+          name: category
+          required: true
+          schema:
+            type: string
+            example: Python
+            
+        - in: path
+          name: query
+          required: true
+          schema:
+            type: string
+            example: There is an error in the GA 4 Q7.. Could you please look into it?
+
+      responses:
+        "200":
+          description: Request Successful - Ticket Added Successfully!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userid:
+                    type: integer
+                    example: 179
+                  Ticket_id:
+                    type: string
+                    example: Joey
+                  status:
+                    type: string
+                    example: Ticket Added Successfully!
+                  
+            
+        "403":
+          description: Already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Ticket with same query already exists
+
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Internal Server Error
+
+  /Student/like_ticket/{ticket_id}:
+    description: "Endpoint to like queries"
+    put:
+      tags:
+      - "Student"
+      description: "Operation to help students like tickets of interest"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Ticket_id:
+                  type: string
+                  example: Python/12345
+                Likes:
+                  type: integer
+                  example: 1
+
+      parameters:
+        - in: path
+          name: ticket_id
+          required: true
+          schema:
+            type: string
+            example: Python/12345
+
+      responses:
+        "200":
+          description: Request Successful - Ticket Liked Successfully!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userid:
+                    type: integer
+                    example: 179
+                  ticket_id:
+                    type: string
+                    example: Python/12345
+                  status:
+                    type: string
+                    example: Ticket Liked Successfully!
+                  
+            
+        "404":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Query with given id doesn't exist!
+
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Internal Server Error
+
+  /FAQ/add_ticket/{ticket_id}:
+    description: "Endpoint to add popular queries to FAQ doc"
+    post:
+      tags:
+      - "FAQ"
+      description: "Operation to help add popular queries to the FAQ document."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Ticket_id:
+                  type: string
+                  example: Python/12345
+                Query:
+                  type: string
+                  example: What is the quiz-1 syllabus?
+                Solution:
+                  type: string
+                  example: The Quiz-1 syllabus is Week 1-4.
+
+      parameters:
+        - in: path
+          name: ticket_id
+          required: true
+          schema:
+            type: string
+            example: Python/12345
+
+      responses:
+        "200":
+          description: Request Successful - Ticket Added to FAQ Successfully!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Q_Id:
+                    type: integer
+                    example: 34
+                  status:
+                    type: string
+                    example: FAQ doc updated Successfully!
+
+        "403":
+          description: Already Exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Query already exists in FAQs!
+
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Internal Server Error
+                    
+  /dashboard/tickets/{category}:
+    description: "Endpoint to display all the tickets."
+    get:
+      tags:
+      - "Dashboard"
+      description: "Operation to help users access all the tickets created in the respective categories."
+      
+      parameters:
+        - in: path
+          name: category
+          required: true
+          schema:
+            type: string
+            example: Python
+      
+      responses:
+        "200":
+          description: Request Successful - Tickets Returned!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Ticket_id:
+                    type: string
+                    example: Python/12345
+                  Created_by:
+                    type: integer
+                    example: 179
+                  Solved_by:
+                    type: integer
+                    example: 0
+                  Category:
+                    type: string
+                    example: Python
+                  Query:
+                    type: string
+                    example: There is an error in the GA 4 Q7.. Could you please look into it?
+                  Created_at:
+                    type: string
+                    example: 19th March 2023, 14:30 pm
+                  Solved_at:
+                    type: string
+                    example: 19th March 2023, 19:47 pm
+                  IsResolved:
+                    type: boolean
+                    example: false
+                  AddFAQ:
+                    type: boolean
+                    example: false
+                  Pin:
+                    type: boolean
+                    example: false
+                  Report:
+                    type: boolean
+                    example: false
+                  Likes:
+                    type: integer
+                    example: 0
+                  
+            
+        "404":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Tickets do not exist for the given category
+
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example:  Internal Server Error
+
+
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        UserId:
+          type: integer
+          example: 127
+        UserName:
+          type: string
+          example: Joey
+        UserType:
+          type: string
+          example: Student
+        Password:
+          type: string
+          example: 2pizzas@JoeySpecial
+    
+    faq:
+      type: object
+      properties:
+        Q_Id:
+          type: integer
+          example: 34
+        Query:
+          type: string
+          example: What is the quiz 1 syllabus?
+        Solution:
+          type: string
+          example: The Quiz-1 syllabus is from Week 1-4
+        Category:
+          type: string
+          example: Operational   
+    
+    ticket:
+      type: object
+      properties:
+        Ticket_id:
+          type: string
+          example: Python/12345
+        Created_by:
+          type: integer
+          example: 179
+        Solved_by:
+          type: integer
+          example: 0
+        Category:
+          type: string
+          example: Python
+        Query:
+          type: string
+          example: There is an error in the GA 4 Q7.. Could you please look into it?
+        Created_at:
+          type: string
+          example: 19th March 2023, 14:30 pm
+        Solved_at:
+          type: string
+          example: 19th March 2023, 19:47 pm
+        IsResolved:
+          type: boolean
+          example: false
+        AddFAQ:
+          type: boolean
+          example: false
+        Pin:
+          type: boolean
+          example: false
+        Report:
+          type: boolean
+          example: false
+        Likes:
+          type: integer
+          example: 0
